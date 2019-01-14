@@ -1,4 +1,4 @@
-// gulpfile.babel.js
+// gulpfile.js
 //
 // Get ready for some meta-programming! This contains all the gulp tasks to
 // generate and test our various themes.
@@ -32,8 +32,15 @@ function cleanUswdsAssets(theme) {
   };
 }
 
+function copyCommonTemplates(theme) {
+  return function copy() {
+    return src('common/_layouts/**')
+      .pipe(dest(`${theme}/_layouts`));
+  }
+}
+
 // Compose the gulp tasks for each theme
-const buildDefault = series(copyUswdsAssets('default'));
+const buildDefault = series(copyUswdsAssets('default'), copyCommonTemplates('default'));
 const cleanDefault = series(cleanUswdsAssets('default'));
 
 const build = parallel(buildDefault);
