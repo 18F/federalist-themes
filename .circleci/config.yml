@@ -1,0 +1,15 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/ruby:2.6-node
+    steps:
+      - checkout
+      - run: npm run all
+      - run: npm test
+
+workflows:
+  version: 2
+  commit:
+    jobs:
+      - build

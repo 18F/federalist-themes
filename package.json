@@ -1,0 +1,37 @@
+{
+  "name": "federalist-themes",
+  "version": "1.0.0",
+  "description": "Themes for federalist.18f.gov leveraging best practices so government sites don't have to.",
+  "main": "index.js",
+  "scripts": {
+    "all": "gulp all",
+    "build": "gulp build",
+    "clean": "gulp clean",
+    "gulp": "gulp",
+    "test": "mocha --require @babel/register test/**/*.test.js"
+  },
+  "keywords": [
+    "jekyll",
+    "jekyll",
+    "theme",
+    "federalist",
+    "uswds",
+    "government"
+  ],
+  "author": "Aaron D Borden <adborden@a14n.net>",
+  "license": "CC0-1.0",
+  "dependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/register": "^7.0.0",
+    "chai-fs": "^2.0.0",
+    "del": "^3.0.0",
+    "gulp": "^4.0.0",
+    "gulp-filter": "^5.1.0",
+    "mocha": "^5.2.0",
+    "uswds": "^2.0.0-beta.4"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.2.3",
+    "chai": "^4.2.0"
+  }
+}
