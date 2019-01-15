@@ -25,6 +25,7 @@
     "del": "^3.0.0",
     "gulp": "^4.0.0",
     "gulp-filter": "^5.1.0",
+    "gulp-transform": "^3.0.5",
     "uswds": "^2.0.0-beta.4"
   },
   "devDependencies": {

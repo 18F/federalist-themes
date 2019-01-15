@@ -10,7 +10,12 @@ const {
   watch,
 } = gulp = require('gulp');
 const filter = require('gulp-filter');
+const transform = require('gulp-transform');
 const del = require('del');
+
+const THEMES = [
+  'federalist-standard-theme',
+];
 
 
 function copyUswdsAssets(theme) {
@@ -39,6 +44,47 @@ function copyCommonTemplates(theme) {
   return parallel.apply(gulp, tasks);
 }
 
+function copyTemplateShims(theme) {
+  // Copy "shim" templates that just pass through to uswds/ templates. This
+  // allows us to easily override the templates in the theme without having to
+  // worry about how the build system copies files.
+  //
+  // We copy each layout and template making sure **not** to overwrite any
+  // existing files. Instead of copying the template as is, we replace the
+  // content with the shim content.
+  layoutsRegexp = RegExp('^_layouts/');
+  includesRegexp = RegExp('^_includes/');
+
+  return function copy() {
+    return src('common/**/*')
+      .pipe(transform('utf8', (contents, file) => {
+        if (layoutsRegexp.test(file.relative)) {
+          // Strip the _layouts/ prefix to get the name of the layout.
+          const layout = file.relative.replace(layoutsRegexp, '');
+          return `---
+                  # Shim template acts as a "no-op" to the default uswds template.
+                  layout: uswds/${layout}
+                  ---
+                  {{- content -}}
+                  `;
+        }
+
+        if (includesRegexp.test(file.relative)) {
+          // Strip the _includes/ prefix to get the name of the include.
+          const include = file.relative.replace(includesRegexp, '');
+          return `{%- comment -%}
+                  Shim template acts as a "no-op" to the default uswds template.
+                  {%- endcomment -%}
+                  {%- include uswds/${include} -%}
+                  `;
+        }
+
+        return contents;
+      }))
+      .pipe(dest(`${theme}`, { overwrite: false }));
+  };
+}
+
 function cleanCommonTemplates(theme) {
   return function clean() {
     return del([
@@ -61,25 +107,43 @@ function cleanUswdsSass(theme) {
   };
 }
 
-// Compose the gulp tasks for each theme
-const buildStandard = series(copyUswdsAssets('federalist-standard-theme'), copyUswdsSass('federalist-standard-theme'), copyCommonTemplates('federalist-standard-theme'));
-const cleanStandard = series(cleanUswdsAssets('federalist-standard-theme'), cleanCommonTemplates('federalist-standard-theme'));
-
-const build = parallel(buildStandard);
-const clean = parallel(cleanStandard);
-
 function watchCommonTemplates() {
-  return watch(['common/**'], copyCommonTemplates('federalist-standard-theme'));
+  const task = parallel.apply(null, THEMES.map(theme => copyCommonTemplates(theme)));
+  return watch(['common/**'], { ignoreInitial: false }, task);
 }
+
+
+// Compose the gulp tasks for each theme
+const themeTasks = THEMES.reduce((tasks, theme) => Object.assign(tasks, {
+  [theme]: {
+    build: series(copyUswdsAssets(theme), copyUswdsSass(theme), copyCommonTemplates(theme), copyTemplateShims(theme)),
+    clean: series(cleanUswdsAssets(theme), cleanCommonTemplates(theme)),
+  }
+}), {});
+
+// Compose top-level tasks
+const build = parallel.apply(null, Object.entries(themeTasks).map(([theme, tasks]) => tasks.build));
+const clean = parallel.apply(null, Object.entries(themeTasks).map(([theme, tasks]) => tasks.clean));
 
 const all = series(build);
 
-module.exports = {
-  default: all,
+const globalTasks = {
+  default: build,
   all,
   build,
-  'build:standard': buildStandard,
   clean,
-  'clean:standard': cleanStandard,
   watch: watchCommonTemplates,
 };
+
+// Export intermediate theme tasks e.g. build:standard, clean:standard
+const exportedTasks = Object.entries(themeTasks).reduce((exportedTasks, [theme, tasks]) => {
+  // Strip theme prefix/suffix to get a short-name for the task e.g. "standard"
+  const themeShortName = theme.replace(/federalist-(.*)-theme/, '$1');
+
+  return Object.assign(exportedTasks, {
+    [`build:${themeShortName}`]: tasks.build,
+    [`clean:${themeShortName}`]: tasks.clean,
+  });
+}, globalTasks);
+
+module.exports = exportedTasks;
