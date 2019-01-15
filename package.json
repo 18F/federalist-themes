@@ -8,7 +8,8 @@
     "build": "gulp build",
     "clean": "gulp clean",
     "gulp": "gulp",
-    "test": "mocha test/**/*.test.js"
+    "test": "mocha test/**/*.test.js",
+    "watch": "gulp watch"
   },
   "keywords": [
     "jekyll",

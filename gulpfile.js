@@ -7,6 +7,7 @@ const {
   parallel,
   series,
   src,
+  watch,
 } = gulp = require('gulp');
 const filter = require('gulp-filter');
 const del = require('del');
@@ -67,6 +68,10 @@ const cleanStandard = series(cleanUswdsAssets('federalist-standard-theme'), clea
 const build = parallel(buildStandard);
 const clean = parallel(cleanStandard);
 
+function watchCommonTemplates() {
+  return watch(['common/**'], copyCommonTemplates('federalist-standard-theme'));
+}
+
 const all = series(build);
 
 module.exports = {
@@ -76,4 +81,5 @@ module.exports = {
   'build:standard': buildStandard,
   clean,
   'clean:standard': cleanStandard,
+  watch: watchCommonTemplates,
 };
