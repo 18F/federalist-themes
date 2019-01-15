@@ -22,7 +22,7 @@ function copyUswdsAssets(theme) {
   return function copy() {
     // Copy assets from the uswds package
     // We're only looking for assets like fonts, images, and javascript files.
-    uswdsDirs = ['fonts', 'img', 'js'].map(d => `node_modules/uswds/dist/${d}/**`);
+    uswdsDirs = ['css', 'fonts', 'img', 'js'].map(d => `node_modules/uswds/dist/${d}/**`);
 
     return src(uswdsDirs, { base: 'node_modules/uswds/dist' })
       .pipe(dest(`${theme}/assets/uswds`));

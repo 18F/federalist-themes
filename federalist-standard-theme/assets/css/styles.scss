@@ -6,7 +6,9 @@
 //@import 'uswds/uswds-theme-color';
 //@import 'uswds/uswds-theme-utilities';
 // Override some USWDS settings
-$theme-font-path: '../uswds/fonts';
-$theme-image-path: '../uswds/img';
+//$theme-font-path: '../uswds/fonts';
+//$theme-image-path: '../uswds/img';
+//@import '_uswds/uswds.scss';
 
-@import '_uswds/uswds.scss';
+// Import the compiled, minified CSS
+@import '../uswds/css/uswds.min.css';
