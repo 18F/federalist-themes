@@ -1,0 +1,17 @@
+title: Federalist Standard Theme
+
+# Jekyll settings
+permalink: pretty
+exclude:
+  - CONTRIBUTING.md
+  - '*.gemspec'
+  - '*.gem'
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - package.json
+  - package-lock.json
+  - LICENSE.md
+  - Rakefile
+  - README.md
+  - vendor
