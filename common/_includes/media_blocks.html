@@ -1,0 +1,36 @@
+<section class="usa-graphic_list usa-section usa-section-dark">
+  <div class="grid-container">
+    {% for block in include.media_blocks %}
+
+      {% comment %}
+      We want to group the media-blocks in rows. It's a bit awkward but we do with cycle here.
+      {% endcomment %}
+      {% capture group %}{% cycle 'group-by-two': 'first', 'last' %}{% endcapture %}
+
+      {% if group == 'first' %}
+      {% comment %}
+      Start the row
+      {% endcomment %}
+      <div class="usa-graphic_list-row grid-row grid-gap">
+      {% endif %}
+
+        {% assign heading_html = block.heading | escape | default: block.heading_html %}
+        {% assign content_html = block.content | markdownify | default: block.content_html %}
+
+        <div class="usa-media_block tablet:grid-col">
+          <img class="usa-media_block-img"  src="{{ block.img_src }}" alt="{{ block.alt_text | escape }}">
+          <div class="usa-media_block-body">
+            <h3 class="usa-graphic_list-heading">{{ heading_html }}</h3>
+            {{ content_html }}
+          </div>
+        </div>
+
+      {% if group == 'last' %}
+      {% comment %}
+      End the row
+      {% endcomment %}
+      </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>

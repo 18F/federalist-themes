@@ -1,0 +1,12 @@
+{% assign secondary_lead = include.secondary_lead %}
+{% assign heading_html = secondary_lead.heading | escape | default: secondary_lead.heading_html %}
+{% assign content_html = secondary_lead.content | markdownify | default: secondary_lead.content_html %}
+<section class="usa-section">
+  <div class="grid-container">
+    <h2 class="font-heading-xl">{{ heading_html }}</h2>
+    <div class="usa-font-lead">
+      {{ content_html }}
+    </div>
+    <a class="usa-button usa-button-big" href="{{ secondary_lead.cta_link }}">{{ secondary_lead.cta_text | escape }}</a>
+  </div>
+</section>

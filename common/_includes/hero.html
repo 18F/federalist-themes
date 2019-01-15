@@ -1,0 +1,13 @@
+{% assign hero = include.hero %}
+{% assign heading_html = default: hero.heading | escape | default: hero.heading_html %}
+{% assign content_html = default: hero.content | markdownify | default: hero.content_html %}
+<section class="usa-hero">
+  <div class="grid-container">
+    <div class="usa-hero-callout">
+      <h2 class="usa-hero-heading">{{ heading_html }}</h2>
+      {{ content_html }}
+      <a class="usa-button" href="{{ hero.cta_link }}">{{ hero.cta_text | escape }}</a>
+    </div>
+  </div>
+</section>
+
