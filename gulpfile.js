@@ -7,13 +7,14 @@ const {
   parallel,
   series,
   src,
-} = require('gulp');
+} = gulp = require('gulp');
 const filter = require('gulp-filter');
 const del = require('del');
 
 const themes = [
   'default',
 ];
+
 
 function copyUswdsAssets(theme) {
   return function copy() {
@@ -33,15 +34,39 @@ function cleanUswdsAssets(theme) {
 }
 
 function copyCommonTemplates(theme) {
+  const tasks = [
+    () => src('common/_layouts/**').pipe(dest(`${theme}/_layouts/uswds`)),
+    () => src('common/_includes/**').pipe(dest(`${theme}/_includes/uswds`)),
+  ];
+
+  return parallel.apply(gulp, tasks);
+}
+
+function cleanCommonTemplates(theme) {
+  return function clean() {
+    return del([
+      `${theme}/_layouts/uswds`,
+      `${theme}/_includes/uswds`,
+    ]);
+  };
+}
+
+function copyUswdsSass(theme) {
   return function copy() {
-    return src('common/_layouts/**')
-      .pipe(dest(`${theme}/_layouts`));
-  }
+    return src('node_modules/uswds/dist/scss/**')
+      .pipe(dest(`${theme}/_sass/_uswds`));
+  };
+}
+
+function cleanUswdsSass(theme) {
+  return function clean() {
+    return del(`${theme}/_sass/_uswds`);
+  };
 }
 
 // Compose the gulp tasks for each theme
-const buildDefault = series(copyUswdsAssets('default'), copyCommonTemplates('default'));
-const cleanDefault = series(cleanUswdsAssets('default'));
+const buildDefault = series(copyUswdsAssets('default'), copyUswdsSass('default'), copyCommonTemplates('default'));
+const cleanDefault = series(cleanUswdsAssets('default'), cleanCommonTemplates('default'));
 
 const build = parallel(buildDefault);
 const clean = parallel(cleanDefault);
