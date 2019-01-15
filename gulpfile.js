@@ -11,10 +11,6 @@ const {
 const filter = require('gulp-filter');
 const del = require('del');
 
-const themes = [
-  'default',
-];
-
 
 function copyUswdsAssets(theme) {
   return function copy() {
@@ -65,11 +61,11 @@ function cleanUswdsSass(theme) {
 }
 
 // Compose the gulp tasks for each theme
-const buildDefault = series(copyUswdsAssets('default'), copyUswdsSass('default'), copyCommonTemplates('default'));
-const cleanDefault = series(cleanUswdsAssets('default'), cleanCommonTemplates('default'));
+const buildStandard = series(copyUswdsAssets('federalist-standard-theme'), copyUswdsSass('federalist-standard-theme'), copyCommonTemplates('federalist-standard-theme'));
+const cleanStandard = series(cleanUswdsAssets('federalist-standard-theme'), cleanCommonTemplates('federalist-standard-theme'));
 
-const build = parallel(buildDefault);
-const clean = parallel(cleanDefault);
+const build = parallel(buildStandard);
+const clean = parallel(cleanStandard);
 
 const all = series(build);
 
@@ -77,7 +73,7 @@ module.exports = {
   default: all,
   all,
   build,
-  'build:default': buildDefault,
+  'build:standard': buildStandard,
   clean,
-  'clean:default': cleanDefault,
+  'clean:standard': cleanStandard,
 };
