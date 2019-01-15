@@ -28,6 +28,66 @@ More advanced customizations in the theme are ready when you are!
 
 ## Usage
 
+
+### Configuration
+
+These settings are available from your `_config.yml`.
+
+
+#### `description` string
+
+Description of your site. This is used for site metadata and helps with SEO and
+other web integrations.
+
+```yaml
+description: >-
+  A collection of Federalist themes.
+```
+
+
+#### `contact` object
+
+Provide contact informtion to be displayed on your site.
+
+Property | Description | Required? | Default
+-------- | ----------- | --------- | -------
+`twitter`   | [Twitter](https://twitter.com/) handle. | no |
+
+
+#### `favicons` array of object
+
+Configures favicons in your `<head>` tag.
+
+Property | Description | Required? | Default
+-------- | ----------- | --------- | -------
+`href`   | Value for the `href` attribute in the `link` tag. | yes |
+`rel`    | Value for the `rel` attribute in the `link` tag. | no | `'icon'`
+`sizes`  | Value for the `sizes` attribute in the `link` tag. | no |
+`type`   | Value for the `type` attribute in the `link` tag. | yes |
+
+```yaml
+favicons:
+  - href: /assets/uswds/img/favicons/favicon.ico
+    type: image/ico
+    rel: icon shortcut
+    sizes: '192x192'
+  - href: /assets/uswds/img/favicons/favicon-57.png
+    type: image/png
+    rel: icon
+    sizes: '57x57'
+```
+
+
+#### `stylesheets` array of string
+
+List of CSS stylesheets to include in your `<head>` tag.
+
+```yaml
+stylesheets:
+  - /assets/css/my_site.css
+```
+
+
 ### Layouts
 
 
@@ -48,6 +108,9 @@ create.
 
 An empty layout containing only the non-visible `<head>` content. This layout
 should rarely be used.
+
+Page parameters:
+ - `body_classes` space separated list of classes to add to the `<body>` element.
 
 
 ### Includes
