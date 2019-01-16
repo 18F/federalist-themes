@@ -18,7 +18,7 @@
         {% assign content_html = block.content | markdownify | default: block.content_html %}
 
         <div class="usa-media_block tablet:grid-col">
-          <img class="usa-media_block-img"  src="{{ block.img_src }}" alt="{{ block.alt_text | escape }}">
+          <img class="usa-media_block-img"  src="{{ block.img_src }}" alt="{{ block.img_alt | escape }}">
           <div class="usa-media_block-body">
             <h3 class="usa-graphic_list-heading">{{ heading_html }}</h3>
             {{ content_html }}
