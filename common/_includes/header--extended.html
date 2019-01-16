@@ -1,0 +1,56 @@
+{%- assign primary_nav = include.primary_nav | default: layout.default_primary_nav -%}
+{%- assign secondary_nav = include.secondary_nav | default: layout.default_secondary_nav -%}
+<div class="usa-overlay"></div>
+<header class="usa-header usa-header-extended" role="banner">
+  <div class="usa-navbar">
+    <div class="usa-logo" id="extended-logo">
+      <em class="usa-logo-text"><a href="{{ '/' | prepend: site.baseurl }}" title="Home" aria-label="Home">{{ page.title | default: site.title | escape }}</a></em>
+    </div>
+    <button class="usa-menu-btn">Menu</button>
+  </div>
+  <nav role="navigation" class="usa-nav">
+    <div class="usa-nav-inner">
+      <button class="usa-nav-close"><img src="/assets/uswds/img/close.svg" alt="close"></button>
+      <ul class="usa-nav-primary usa-accordion">
+        {% for nav in primary_nav -%}
+          {% assign nav_id = nav.id | default: forloop.index %}
+          {%- capture is_current -%}
+          {%- if nav.href == page.url or (nav.section and nav.section == page.nav_section) -%}yes{%- endif -%}
+          {%- endcapture -%}
+          <li class="usa-nav-primary-item">
+            {% unless nav.children %}
+              <a class="usa-nav-link{% if is_current != empty %} usa-current{% endif %}" href="{{ nav.href }}"><span>{{ nav.text | escape }}</span></a>
+            {% else %}
+              <button class="usa-accordion-button usa-nav-link{% if is_current != empty %} usa-current{% endif %}" aria-expanded="false" aria-controls="extended-nav-{{ nav_id }}"><span>{{ nav.text | escape }}</span></button>
+              <ul id="extended-nav-{{ nav_id }}" class="usa-nav-submenu">
+                {% for subnav in nav.children -%}
+                  <li class="usa-nav-submenu-item">
+                    <a href="{{ subnav.href }}">{{ subnav.text | escape }}</a>
+                  </li>
+                {%- endfor %}
+              </ul>
+            {% endunless %}
+          </li>
+        {%- endfor %}
+      </ul>
+      <div class="usa-nav-secondary">
+        <ul class="usa-nav-secondary-links">
+          {% for nav in secondary_nav -%}
+            <li class="usa-nav-secondary-item">
+              <a href="{{ nav.href }}">{{ nav.text | escape }}</a>
+            </li>
+          {%- endfor %}
+        </ul>
+        {% if site.search -%}
+          <form class="usa-search usa-search-small">
+            <div role="search">
+              <label class="usa-sr-only" for="extended-search-field-small">Search</label>
+              <input class="usa-input" id="extended-search-field-small" type="search" name="search">
+              <button class="usa-button" type="submit"><span class="usa-sr-only">Search</span></button>
+            </div>
+          </form>
+        {%- endif %}
+      </div>
+    </div>
+  </nav>
+</header>

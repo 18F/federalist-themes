@@ -59,6 +59,34 @@ default_secondary_lead:
     “Learn more,” and so on.
   cta_text: Call to action
   cta_link: '#'
+
+default_primary_nav:
+  - text: Section A
+    href: '/'
+    children:
+      - text: Link
+        href: '#'
+      - text: Link
+        href: '#'
+      - text: Link
+        href: '#'
+  - text: Section B
+    href: '#'
+    children:
+      - text: Link
+        href: '#'
+      - text: Link
+        href: '#'
+      - text: Link
+        href: '#'
+  - text: Simple link
+    href: '#'
+
+default_secondary_nav:
+  - text: Secondary link
+    href: '#'
+  - text: Another link
+    href: '#'
 ---
 {% assign hero = page.hero | default: layout.default_hero %}
 {% if hero %}

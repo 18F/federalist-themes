@@ -78,6 +78,53 @@ favicons:
 ```
 
 
+<a name="primary_nav"></a>
+#### `primary_nav` array of object
+
+Describes the primary navigation menu in the header.
+
+Property | Description | Required? | Default
+-------- | ----------- | --------- | -------
+`text`   | Display text for the link. | yes |
+`href`   | `href` attribute for the link. | yes |
+`children` | List of child links if this is a menu. Nested menus are not supported. | no |
+`section` | Name of the section for organizing pages and indicating the current section. See below. | no |
+
+
+```yaml
+primary_nav:
+  - text: Resources
+    href: '/'
+    children:
+      - text: Link
+        href: '#'
+      - text: Link
+        href: '#'
+      - text: Link
+        href: '#'
+  - text: Simple link
+    href: '#'
+```
+
+For the `section` property, you can name the section and add a `nav_section` to
+individual pages. When viewing a page with a `nav_section`, the matching
+navigation link will be indicated as the current section with the `.usa-current`
+class.
+
+
+#### `secondary_nav` array of object
+
+Configures the secondary navigation menu. See [`primary_nav`](#primary_nav).
+Submenus are not supported.
+
+
+#### `search` string
+
+Configures site search with [Search.gov](https://search.gov/#). See [Federalist
+documentation](https://federalist-docs.18f.gov/pages/using-federalist/search/)
+to configure site search.
+
+
 #### `stylesheets` array of string
 
 List of CSS stylesheets to include in your `<head>` tag.
@@ -118,6 +165,7 @@ Page parameters:
 We standardize template variables where possible. Content provided to templates
 are escaped by default. Most includes accept a `content` property for the body
 content of the component which is treated as markdown.
+
 
 #### Passing in HTML
 
