@@ -1,5 +1,3 @@
 ---
 layout: landing
 ---
-
-hi hi

@@ -93,11 +93,14 @@ default_secondary_nav:
 {% include uswds/hero.html hero=hero %}
 {% endif %}
 
+{% assign content_stripped = content | strip %}
+{% unless content_stripped == empty %}
 <section class="grid-container usa-section">
   <div class="usa-width-one-whole">
-    {{ content }}
+    {{ content_stripped }}
   </div>
 </section>
+{% endunless %}
 
 {% assign tagline = page.tagline | default: layout.default_tagline %}
 {% if tagline %}
