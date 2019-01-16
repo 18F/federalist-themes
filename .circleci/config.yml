@@ -28,6 +28,9 @@ release-gem-steps: &release-gem-steps
       name: Setup rubygems
       command: .circleci/setup-rubygems.sh
   - run:
+      name: Setup theme dependencies
+      command: npm run setup
+  - run:
       name: Build the theme
       command: npm run build
   - run:
