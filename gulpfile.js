@@ -59,24 +59,22 @@ function copyTemplateShims(theme) {
     return src('common/**/*')
       .pipe(transform('utf8', (contents, file) => {
         if (layoutsRegexp.test(file.relative)) {
-          // Strip the _layouts/ prefix to get the name of the layout.
-          const layout = file.relative.replace(layoutsRegexp, '');
-          return `---
-                  # Shim template acts as a "no-op" to the default uswds template.
-                  layout: uswds/${layout}
-                  ---
-                  {{- content -}}
-                  `;
+          // Strip the _layouts/ prefix and .html extension to get the name of the layout.
+          const layout = file.relative.replace(layoutsRegexp, '').replace(/\.html$/i, '');
+          return '---\n' +
+                 '# Shim template acts as a "no-op" to the default uswds template.\n' +
+                 `layout: uswds/${layout}\n` +
+                 '---\n' +
+                 '{{- content -}}\n';
         }
 
         if (includesRegexp.test(file.relative)) {
           // Strip the _includes/ prefix to get the name of the include.
           const include = file.relative.replace(includesRegexp, '');
-          return `{%- comment -%}
-                  Shim template acts as a "no-op" to the default uswds template.
-                  {%- endcomment -%}
-                  {%- include uswds/${include} -%}
-                  `;
+          return '{%- comment -%}\n' +
+                 'Shim template acts as a "no-op" to the default uswds template.\n' +
+                 '{%- endcomment -%}\n' +
+                 `{%- include uswds/${include} -%}\n`;
         }
 
         return contents;
